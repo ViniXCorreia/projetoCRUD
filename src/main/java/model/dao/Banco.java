@@ -9,7 +9,8 @@ import java.sql.Statement;
 
 public class Banco {
 
-	private static final String DRIVER = "com.mysql.jdbc.Driver";
+	//private static final String DRIVER = "com.mysql.jdbc.Driver;
+	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private static final String BANCODADOS = "dbsocorrodesk";
 	private static final String CONEXAO = "jdbc:mysql://localhost:3306/" + BANCODADOS;
 	private static final String USER = "root";

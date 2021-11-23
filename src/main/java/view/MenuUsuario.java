@@ -1,7 +1,10 @@
 package view;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import controller.UsuarioController;
 import model.vo.TipoUsuarioVO;
 import model.vo.UsuarioVO;
 
@@ -82,12 +85,68 @@ public class MenuUsuario {
 				usuarioVO.setTipoUsuario(TipoUsuarioVO.getTipoUsuarioVOPorValor(this.apresentarOpcoesTipoUsuario()));
 			}while(usuarioVO.getTipoUsuario() == null);
 		}
-		//TODO fazer o cadastro do usuario no banco...
+		System.out.print("\nDigite o nome: ");
+		usuarioVO.setNome(teclado.nextLine());
+		System.out.print("\nDigite o cpf: ");
+		usuarioVO.setCpf(teclado.nextLine());
+		System.out.print("\nDigite o email: ");
+		usuarioVO.setEmail(teclado.nextLine());
+		
+		usuarioVO.setDataCadastro(LocalDate.now());
+		
+		System.out.print("\nDigite o Login: ");
+		usuarioVO.setLogin(teclado.nextLine());
+		System.out.print("\nDigite o Senha: ");
+		usuarioVO.setSenha(teclado.nextLine());
+		
+		if(this.validarCamposCadastro(usuarioVO)) {
+			UsuarioController usuarioCOntroller = new UsuarioController();
+			usuarioVO = usuarioCOntroller.cadastrarUsuarioController(usuarioVO);
+			if(usuarioVO.getIdUsuario() != 0) {
+				System.out.println("Usuário cadastrado com sucesso!");
+			}else {
+				System.out.println("Não foi possível cadastrar o usuário!");
+			}
+		}
+
+	}
+
+	private boolean validarCamposCadastro(UsuarioVO usuarioVO) {
+		boolean resultado = true;
+		System.out.println();
+		if(usuarioVO.getNome() == null && usuarioVO.getNome().isEmpty()) {
+			System.out.println("O campo nome é obrigatorio!");
+			resultado = false;
+		}
+		if(usuarioVO.getCpf() == null && usuarioVO.getCpf().isEmpty()) {
+			System.out.println("O campo CPF é obrigatorio!");
+			resultado = false;
+		}
+		if(usuarioVO.getEmail() == null && usuarioVO.getEmail().isEmpty()) {
+			System.out.println("O campo Email é obrigatorio!");
+			resultado = false;
+		}
+		if(usuarioVO.getLogin() == null && usuarioVO.getLogin().isEmpty()) {
+			System.out.println("O campo Login é obrigatorio!");
+			resultado = false;
+		}
+		if(usuarioVO.getSenha() == null && usuarioVO.getSenha().isEmpty()) {
+			System.out.println("O campo Senha é obrigatorio!");
+			resultado = false;
+		}
+		return resultado;
 	}
 
 	private int apresentarOpcoesTipoUsuario() {
-		//TODO fazer consulta no banco...
-		return 0;
+		UsuarioController usuarioController = new UsuarioController();
+		ArrayList<TipoUsuarioVO> listaTipoUsuarioVO = usuarioController.consultarTiposUsuarios();
+		System.out.println("\n---- Tipos de Usuários ----");
+		System.out.println("Opções: ");
+		for(int i = 0; i < listaTipoUsuarioVO.size(); i++) {
+			System.out.println(listaTipoUsuarioVO.get(i).getValor() + " - " + listaTipoUsuarioVO.get(i));
+		}
+		System.out.print("\nDigitie uma opção: ");
+		return Integer.parseInt(teclado.nextLine());
 	}
 	
 
