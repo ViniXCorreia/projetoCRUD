@@ -1,6 +1,7 @@
 package view;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,6 +12,7 @@ import model.vo.UsuarioVO;
 public class MenuUsuario {
 
 	Scanner teclado = new Scanner(System.in);
+	DateTimeFormatter dataFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	private static final int OPCAO_MENU_CADASTRAR_USUARIO = 1;
 	private static final int OPCAO_MENU_CONSULTAR_USUARIO = 2;
@@ -65,7 +67,20 @@ public class MenuUsuario {
 	}
 
 	private void excluirUsuario() {
-		// TODO Auto-generated method stub
+		UsuarioVO usuarioVO = new UsuarioVO();
+		System.out.println("\nDigite o código do usuário: ");
+		usuarioVO.setIdUsuario(Integer.parseInt(teclado.nextLine()));
+		System.out.println("Digite a data de expiração no formato dd/mm/aaaa: ");
+		usuarioVO.setDataExpiracao(LocalDate.parse(teclado.nextLine(), dataFormatter));
+		
+		UsuarioController usuarioController = new UsuarioController();
+		boolean resultado = usuarioController.excluirUsuarioController(usuarioVO);
+		
+		if(resultado) {
+			System.out.println("\n Usuário excluído com sucesso!");
+		} else {
+			System.out.println("\nNão foi possível excluir o usuário!");
+		}
 
 	}
 
@@ -114,23 +129,27 @@ public class MenuUsuario {
 	private boolean validarCamposCadastro(UsuarioVO usuarioVO) {
 		boolean resultado = true;
 		System.out.println();
-		if(usuarioVO.getNome() == null && usuarioVO.getNome().isEmpty()) {
+		if(usuarioVO.getNome() == null || usuarioVO.getNome().isEmpty()) {
 			System.out.println("O campo nome é obrigatorio!");
 			resultado = false;
 		}
-		if(usuarioVO.getCpf() == null && usuarioVO.getCpf().isEmpty()) {
+		if(usuarioVO.getCpf() == null || usuarioVO.getCpf().isEmpty()) {
 			System.out.println("O campo CPF é obrigatorio!");
 			resultado = false;
 		}
-		if(usuarioVO.getEmail() == null && usuarioVO.getEmail().isEmpty()) {
+		if(usuarioVO.getEmail() == null || usuarioVO.getEmail().isEmpty()) {
 			System.out.println("O campo Email é obrigatorio!");
 			resultado = false;
 		}
-		if(usuarioVO.getLogin() == null && usuarioVO.getLogin().isEmpty()) {
+		if(usuarioVO.getDataCadastro() == null) {
+			System.out.println("O campo data de cadastro é obrigatório!");
+			resultado = false;
+		}
+		if(usuarioVO.getLogin() == null || usuarioVO.getLogin().isEmpty()) {
 			System.out.println("O campo Login é obrigatorio!");
 			resultado = false;
 		}
-		if(usuarioVO.getSenha() == null && usuarioVO.getSenha().isEmpty()) {
+		if(usuarioVO.getSenha() == null || usuarioVO.getSenha().isEmpty()) {
 			System.out.println("O campo Senha é obrigatorio!");
 			resultado = false;
 		}

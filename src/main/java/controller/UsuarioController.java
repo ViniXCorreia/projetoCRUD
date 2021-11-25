@@ -22,5 +22,15 @@ public class UsuarioController {
 		UsuarioBO usuarioBO = new UsuarioBO();
 		return usuarioBO.cadastrarUsuarioBO(usuarioVO);
 	}
+	
+	public boolean excluirUsuarioController(UsuarioVO usarioVO) {
+		UsuarioBO usuarioBO = new UsuarioBO();
+		return usuarioBO.excluirUsuarioBO(usarioVO);
+	}
+	
+	public boolean atualizarUsuarioCOntroller(UsuarioVO usuarioVO) {
+		UsuarioBO usuarioBO = new UsuarioBO();
+		return usuarioBO.atualizarUsuarioBO(usuarioVO);
+	}
 
 }

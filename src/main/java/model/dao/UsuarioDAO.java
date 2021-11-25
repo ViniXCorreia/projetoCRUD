@@ -131,5 +131,104 @@ public class UsuarioDAO {
 		}
 		return usuarioVO;
 	}
+	
+	public boolean excluirUsuarioDAO(UsuarioVO usuarioVO) {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		boolean retorno = false;
+		
+		String query = "UPDATE usuario SET dataexpiracao = '" + usuarioVO.getDataExpiracao() +
+						"' WHERE idusuario = " + usuarioVO.getIdUsuario();
+		
+		try {
+			if(stmt.executeUpdate(query) == 1) {
+				retorno = true;
+			}
+		} catch(SQLException e){
+			System.out.println("Erro ao executar a query de exclusão do usuário.");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
+		}
+		return retorno;
+	}
+
+	public boolean verificarExistenciaRegistroPorIdUsuarioDAO(int idUsuario) {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		ResultSet resultado = null;
+		boolean retorno = false;
+		
+		String query = "SELECT idusuario FROM usuario WHERE idusuario = " + idUsuario; 
+		
+		try {
+			resultado = stmt.executeQuery(query);
+			if(resultado.next()) {
+				retorno = true;
+			}
+		} catch(SQLException e){
+			System.out.println("Erro ao executar a query que verifica a existência de usuário por ID.");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeResultSet(resultado);
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
+		}
+		return retorno;
+	}
+
+	public boolean verificarDesligamentoPorIdUsuarioDAO(UsuarioVO usuarioVO) {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		ResultSet resultado = null;
+		boolean retorno = false;
+		
+		String query = "SELECT dataexpiracao FROM usuario WHERE idusuario = " + usuarioVO.getIdUsuario() +
+						" AND dataexpiracao is not null"; 
+		
+		try {
+			resultado = stmt.executeQuery(query);
+			if(resultado.next()) {
+				retorno = true;
+			}
+		} catch(SQLException e){
+			System.out.println("Erro ao executar a query que verifica o desligamento do usuario por ID.");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeResultSet(resultado);
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
+		}
+		return retorno;
+	}
+
+	public boolean atualizarUsuarioDAO(UsuarioVO usuarioVO) {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		boolean retorno = false;
+		
+		String query = "UPDATE usuario SET idtipousuario = " + usuarioVO.getTipoUsuario().getValor()
+				+ ", nome = '" + usuarioVO.getNome()
+				+ "', cpf = '" + usuarioVO.getCpf()
+				+ "', email = '" + usuarioVO.getEmail()
+				+ "', datacadastro = '" + usuarioVO.getDataCadastro()
+				+ "', login = '" + usuarioVO.getLogin()
+				+ "', senha = '" + usuarioVO.getSenha()
+				+ "WHERE idusuario = " + usuarioVO.getIdUsuario();
+		
+		try {
+			if(stmt.executeUpdate(query) == 1) {
+				retorno = true;
+			}
+		} catch(SQLException e){
+			System.out.println("Erro ao executar a query de atualização do usuário.");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
+		}
+		return retorno;
+	}
 
 }

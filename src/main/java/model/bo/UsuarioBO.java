@@ -27,5 +27,35 @@ public class UsuarioBO {
 		}
 		return usuarioVO;
 	}
+	
+	public boolean excluirUsuarioBO(UsuarioVO usuarioVO) {
+		boolean resultado = false;
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		if(usuarioDAO.verificarExistenciaRegistroPorIdUsuarioDAO(usuarioVO.getIdUsuario())) {
+			if(usuarioDAO.verificarDesligamentoPorIdUsuarioDAO(usuarioVO)) {
+				System.out.println("\nUsuário Já se encontra desligado na base de dados.");
+			} else {
+				resultado = usuarioDAO.excluirUsuarioDAO(usuarioVO);
+			}
+		} else {
+			System.out.println("\nUsuario não existe na base de dados");
+		}
+		return resultado;
+	}
+
+	public boolean atualizarUsuarioBO(UsuarioVO usuarioVO) {
+		boolean resultado = false;
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		if(usuarioDAO.verificarExistenciaRegistroPorIdUsuarioDAO(usuarioVO.getIdUsuario())) {
+			if(usuarioDAO.verificarDesligamentoPorIdUsuarioDAO(usuarioVO)) {
+				System.out.println("\nUsuário Já se encontra desligado na base de dados.");
+			} else {
+				resultado = usuarioDAO.atualizarUsuarioDAO(usuarioVO);
+			}
+		} else {
+			System.out.println("\nUsuario não existe na base de dados");
+		}
+		return resultado;
+	}
 
 }
