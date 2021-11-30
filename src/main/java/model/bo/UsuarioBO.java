@@ -53,9 +53,27 @@ public class UsuarioBO {
 				resultado = usuarioDAO.atualizarUsuarioDAO(usuarioVO);
 			}
 		} else {
-			System.out.println("\nUsuario não existe na base de dados");
+			System.out.println("\nUsuario ainda não foi cadastrado");
 		}
 		return resultado;
+	}
+
+	public UsuarioVO consultarUsuarioBO(UsuarioVO usuarioVO) {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		UsuarioVO usuario = usuarioDAO.consultarUsuarioDAO(usuarioVO);
+		if(usuario == null){
+			System.out.println("\nUsuário não Localizado!");
+		}
+		return usuario;
+	}
+
+	public ArrayList<UsuarioVO> consultarTodosUsuarioBO() {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		ArrayList<UsuarioVO> listaUsuariosVO = usuarioDAO.consultarTodosUsuariosDAO();
+		if(listaUsuariosVO.isEmpty()) {
+			System.out.println("Lista de usuários vazia!");
+		}
+		return listaUsuariosVO;
 	}
 
 }

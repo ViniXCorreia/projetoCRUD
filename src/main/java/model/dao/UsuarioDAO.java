@@ -6,12 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import model.vo.TipoUsuarioVO;
 import model.vo.UsuarioVO;
 
 public class UsuarioDAO {
+	
+	DateTimeFormatter dataFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	public UsuarioVO realizarLoginDAO(UsuarioVO usuarioVO) {
 		Connection conn = Banco.getConnection();
@@ -190,7 +193,11 @@ public class UsuarioDAO {
 		try {
 			resultado = stmt.executeQuery(query);
 			if(resultado.next()) {
-				retorno = true;
+				String dataExpiracao = resultado.getString(1);
+				if (dataExpiracao != null){
+					retorno = true;
+				}
+				
 			}
 		} catch(SQLException e){
 			System.out.println("Erro ao executar a query que verifica o desligamento do usuario por ID.");
@@ -229,6 +236,80 @@ public class UsuarioDAO {
 			Banco.closeConnection(conn);
 		}
 		return retorno;
+	}
+
+	public UsuarioVO consultarUsuarioDAO(UsuarioVO usuarioVO) {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		ResultSet resultado = null;
+		
+		UsuarioVO usuario = new UsuarioVO();
+		String query = "SELECT u.idusuario, tipo.descricao, u.nome, u.cpf, u.email, u.dataCadastro, u.dataExpiracao, u.login, u.senha " +
+					"FROM usuario u, tipousuario tipo " + 
+					"WHERE u.idTipoUsuario = tipo.idTipoUsuario " +
+					"AND u.idusuario = " + usuarioVO.getIdUsuario();
+		try {
+			resultado = stmt.executeQuery(query);
+			if(resultado.next()) {
+				usuarioVO.setIdUsuario(Integer.parseInt(resultado.getString(1)));
+				usuarioVO.setTipoUsuario(TipoUsuarioVO.valueOf(resultado.getString(2)));
+				usuarioVO.setNome(resultado.getString(3));
+				usuarioVO.setCpf(resultado.getString(4));
+				usuarioVO.setEmail(resultado.getString(5));
+				usuarioVO.setDataCadastro(LocalDate.parse(resultado.getString(6), dataFormatter));
+				if(resultado.getString(7) != null) {
+					usuarioVO.setDataExpiracao(LocalDate.parse(resultado.getString(7), dataFormatter));
+				}
+				usuarioVO.setLogin(resultado.getString(8));
+				usuarioVO.setSenha(resultado.getString(9));
+			}
+		} catch(SQLException e){
+			System.out.println("Erro ao executar a query de consulta de Usuários.");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeResultSet(resultado);
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
+		}
+		return usuario;
+	}
+
+	public ArrayList<UsuarioVO> consultarTodosUsuariosDAO() {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		ResultSet resultado = null;
+		
+		ArrayList<UsuarioVO> listaUsuariosVO = new ArrayList<UsuarioVO>();
+		String query = "SELECT u.idusuario, tipo.descricao, u.nome, u.cpf, u.email, u.dataCadastro, u.dataExpiracao, u.login, u.senha " +
+						"FROM usuario u, tipousuario tipo " + 
+						"WHERE u.idTipoUsuario = tipo.idTipoUsuario";
+		
+		try {
+			resultado = stmt.executeQuery(query);
+			while(resultado.next()) {
+				UsuarioVO usuarioVO = new UsuarioVO();
+				usuarioVO.setIdUsuario(Integer.parseInt(resultado.getString(1)));
+				usuarioVO.setTipoUsuario(TipoUsuarioVO.valueOf(resultado.getString(2)));
+				usuarioVO.setNome(resultado.getString(3));
+				usuarioVO.setCpf(resultado.getString(4));
+				usuarioVO.setEmail(resultado.getString(5));
+				usuarioVO.setDataCadastro(LocalDate.parse(resultado.getString(6), dataFormatter));
+				if(resultado.getString(7) != null) {
+					usuarioVO.setDataExpiracao(LocalDate.parse(resultado.getString(7), dataFormatter));
+				}
+				usuarioVO.setLogin(resultado.getString(8));
+				usuarioVO.setSenha(resultado.getString(9));
+				listaUsuariosVO.add(usuarioVO);
+			}
+		} catch(SQLException e){
+			System.out.println("Erro ao executar a query de consulta de Usuários.");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeResultSet(resultado);
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
+		}
+		return listaUsuariosVO;
 	}
 
 }

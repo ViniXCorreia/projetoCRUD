@@ -28,9 +28,19 @@ public class UsuarioController {
 		return usuarioBO.excluirUsuarioBO(usarioVO);
 	}
 	
-	public boolean atualizarUsuarioCOntroller(UsuarioVO usuarioVO) {
+	public boolean atualizarUsuarioController(UsuarioVO usuarioVO) {
 		UsuarioBO usuarioBO = new UsuarioBO();
 		return usuarioBO.atualizarUsuarioBO(usuarioVO);
+	}
+
+	public UsuarioVO consultarUsuarioController(UsuarioVO usuarioVO) {
+		UsuarioBO usuarioBO = new UsuarioBO();
+		return usuarioBO.consultarUsuarioBO(usuarioVO);
+	}
+
+	public ArrayList<UsuarioVO> consultarTodosUsuariosController() {
+		UsuarioBO usuarioBO = new UsuarioBO();
+		return usuarioBO.consultarTodosUsuarioBO();
 	}
 
 }
