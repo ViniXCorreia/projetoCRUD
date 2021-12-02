@@ -10,7 +10,7 @@ public class UsuarioController {
 
 	public UsuarioVO realizarLoginController(UsuarioVO usuarioVO) {
 		UsuarioBO usuarioBO =  new UsuarioBO();
-		return usuarioBO.realizarLoginBo(usuarioVO);
+		return usuarioBO.realizarLoginBO(usuarioVO);
 	}
 
 	public ArrayList<TipoUsuarioVO> consultarTiposUsuarios() {

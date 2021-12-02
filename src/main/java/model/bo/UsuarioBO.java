@@ -8,7 +8,7 @@ import model.vo.UsuarioVO;
 
 public class UsuarioBO {
 
-	public UsuarioVO realizarLoginBo(UsuarioVO usuarioVO) {
+	public UsuarioVO realizarLoginBO(UsuarioVO usuarioVO) {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		return usuarioDAO.realizarLoginDAO(usuarioVO);
 	}

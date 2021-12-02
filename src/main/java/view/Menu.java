@@ -20,6 +20,8 @@ public class Menu {
 		while(opcao != OPCAO_MENU_SAIR) {
 			switch(opcao) {
 				case OPCAO_MENU_CHAMADOS:{
+					MenuChamado menuChamado = new MenuChamado();
+					menuChamado.apresentarMenuChamado();
 					break;
 				}
 				case OPCAO_MENU_ATENDIMENTOS:{
