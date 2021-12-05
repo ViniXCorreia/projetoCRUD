@@ -12,7 +12,8 @@ import model.vo.UsuarioVO;
 public class MenuUsuario {
 
 	Scanner teclado = new Scanner(System.in);
-	DateTimeFormatter dataFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	
+	DateTimeFormatter dataFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	private static final int OPCAO_MENU_CADASTRAR_USUARIO = 1;
 	private static final int OPCAO_MENU_CONSULTAR_USUARIO = 2;

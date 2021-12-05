@@ -105,6 +105,26 @@ public class ChamadoVO {
 	public void setSolucao(String solucao) {
 		this.solucao = solucao;
 	}
+
+	public void imprimir() {
+		System.out.printf("\n%5s %10s %8s     %-20s %-20s %-15s %-20s %-15s  ",
+		this.getIdChamado(),
+		this.getIdUsuario(),
+		this.getIdTecnico(),
+		this.getTitulo(),
+		this.getDescricao(),
+		this.validarData(this.getDataAbertura()),
+		this.getSolucao(),
+		this.validarData(this.getDataFechamento()));
+	}
+	
+	private String validarData(LocalDate data) {
+		String resultado = "";
+		if(data != null) {
+			resultado = data.format(dataFormatter);
+		}
+		return resultado;
+	}
 	
 	
 }

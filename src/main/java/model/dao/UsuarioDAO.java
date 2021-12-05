@@ -222,7 +222,7 @@ public class UsuarioDAO {
 				+ "', datacadastro = '" + usuarioVO.getDataCadastro()
 				+ "', login = '" + usuarioVO.getLogin()
 				+ "', senha = '" + usuarioVO.getSenha()
-				+ "WHERE idusuario = " + usuarioVO.getIdUsuario();
+				+ "' WHERE idusuario = " + usuarioVO.getIdUsuario();
 		
 		try {
 			if(stmt.executeUpdate(query) == 1) {
