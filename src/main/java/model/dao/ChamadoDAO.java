@@ -10,9 +10,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import model.vo.ChamadoVO;
-import view.Login;
+import model.vo.UsuarioVO;
 
-public class ChamadoDAO extends Login {
+public class ChamadoDAO {
 	
 	DateTimeFormatter dataFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -24,7 +24,7 @@ public class ChamadoDAO extends Login {
 		PreparedStatement pstmt = Banco.getPreparedStatementWithPk(conn, query);
 		
 		try {
-			pstmt.setInt(1, usuarioLogado.getIdUsuario());
+			pstmt.setInt(1, chamadoVO.getIdUsuario());
 			pstmt.setInt(2, chamadoVO.getIdTecnico());
 			pstmt.setString(3, chamadoVO.getTitulo());
 			pstmt.setString(4, chamadoVO.getDescricao());
@@ -74,20 +74,20 @@ public class ChamadoDAO extends Login {
 		return retorno;
 	}
 
-	public boolean verificarDataFechamentoPorIdChamadoDAO(ChamadoVO chamadoVO) {
+	public boolean verificarDataFechamentoPorIdChamadoDAO(int idChamado) {
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
 		ResultSet resultado = null;
 		boolean retorno = false;
 		
-		String query = "SELECT datafechamento FROM chamados WHERE idchamado = " + chamadoVO.getIdChamado() +
+		String query = "SELECT datafechamento FROM chamados WHERE idchamado = " + idChamado +
 				" AND datafechamento IS NULL";
 		
 		try {
 			resultado = stmt.executeQuery(query);
 			if(resultado.next()) {
 				String dataFechamento = resultado.getString(1);
-				if(dataFechamento == null) {
+				if(dataFechamento != null) {
 					retorno = true;
 				}
 			}
@@ -109,8 +109,8 @@ public class ChamadoDAO extends Login {
 		ResultSet resultado = null;
 		boolean retorno = false;
 		
-		String query = "SELECT idusuario FROM chamados WHERE idchamado = " + chamadoVO.getIdChamado() +
-				" AND idusuario = " + usuarioLogado.getIdUsuario();
+		String query = "SELECT idusuario FROM chamados WHERE idchamado = " + chamadoVO.getIdChamado() 
+						+" AND idusuario = " + chamadoVO.getIdUsuario();
 		
 		try {
 			resultado = stmt.executeQuery(query);
@@ -129,12 +129,12 @@ public class ChamadoDAO extends Login {
 		return retorno;
 	}
 
-	public boolean excluirChamadoDAO(ChamadoVO chamadoVO) {
+	public boolean excluirChamadoDAO(int idChamado) {
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
 		boolean retorno = false;
 		
-		String query = "DELETE FROM chamados WHERE idchamado = " + chamadoVO.getIdChamado();
+		String query = "DELETE FROM chamados WHERE idchamado = " + idChamado;
 		
 		try {
 			if(stmt.executeUpdate(query) == 1) {
@@ -176,7 +176,7 @@ public class ChamadoDAO extends Login {
 		return retorno;
 	}
 
-	public ArrayList<ChamadoVO> consultarTodosChamadosDAO() {
+	public ArrayList<ChamadoVO> consultarTodosChamadosDAO(UsuarioVO usuarioVO) {
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
 		ResultSet resultado = null;
@@ -184,7 +184,7 @@ public class ChamadoDAO extends Login {
 		ArrayList<ChamadoVO> listaChamadosVO = new ArrayList<ChamadoVO>();
 		
 		String query = "SELECT idchamado, idusuario, idtecnico, titulo, descricao, dataabertura, solucao, datafechamento "
-				+ "FROM chamados WHERE idusuario = " + usuarioLogado.getIdUsuario();
+				+ "FROM chamados WHERE idusuario = " + usuarioVO.getIdUsuario();
 		
 		try {
 			resultado = stmt.executeQuery(query);
@@ -214,7 +214,7 @@ public class ChamadoDAO extends Login {
 		return listaChamadosVO;
 	}
 
-	public ArrayList<ChamadoVO> consultarTodosChamadosAbertosDAO() {
+	public ArrayList<ChamadoVO> consultarTodosChamadosAbertosDAO(UsuarioVO usuarioVO) {
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
 		ResultSet resultado = null;
@@ -222,7 +222,7 @@ public class ChamadoDAO extends Login {
 		ArrayList<ChamadoVO> listaChamadosAbertosVO = new ArrayList<ChamadoVO>();
 		
 		String query = "SELECT idchamado, idusuario, idtecnico, titulo, descricao, dataabertura, solucao, datafechamento "
-				+ "FROM chamados WHERE idusuario = " + usuarioLogado.getIdUsuario() 
+				+ "FROM chamados WHERE idusuario = " + usuarioVO.getIdUsuario() 
 				+ " AND datafechamento IS NULL";
 		
 		try {
@@ -242,7 +242,7 @@ public class ChamadoDAO extends Login {
 				listaChamadosAbertosVO.add(chamadoVO);
 			}
 		} catch (SQLException e) {
-			System.out.println("Erro ao executar a query de consulta de todos os chamados.");
+			System.out.println("Erro ao executar a query de consulta dos chamados abertos.");
 			System.out.println("Erro: " + e.getMessage());
 		} finally {
 			Banco.closeResultSet(resultado);
@@ -253,7 +253,7 @@ public class ChamadoDAO extends Login {
 		return listaChamadosAbertosVO;
 	}
 
-	public ArrayList<ChamadoVO> consultarTodosChamadosFechadosDAO() {
+	public ArrayList<ChamadoVO> consultarTodosChamadosFechadosDAO(UsuarioVO usuarioVO) {
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
 		ResultSet resultado = null;
@@ -261,7 +261,7 @@ public class ChamadoDAO extends Login {
 		ArrayList<ChamadoVO> listaChamadosFechadosVO = new ArrayList<ChamadoVO>();
 		
 		String query = "SELECT idchamado, idusuario, idtecnico, titulo, descricao, dataabertura, solucao, datafechamento "
-				+ "FROM chamados WHERE idusuario = " + usuarioLogado.getIdUsuario() 
+				+ "FROM chamados WHERE idusuario = " + usuarioVO.getIdUsuario() 
 				+ " AND datafechamento IS NOT NULL";
 		
 		try {
@@ -281,7 +281,7 @@ public class ChamadoDAO extends Login {
 				listaChamadosFechadosVO.add(chamadoVO);
 			}
 		} catch (SQLException e) {
-			System.out.println("Erro ao executar a query de consulta de todos os chamados.");
+			System.out.println("Erro ao executar a query de consulta dos chamados fechados.");
 			System.out.println("Erro: " + e.getMessage());
 		} finally {
 			Banco.closeResultSet(resultado);
@@ -290,6 +290,128 @@ public class ChamadoDAO extends Login {
 		}
 		
 		return listaChamadosFechadosVO;
+	}
+
+	public ChamadoVO atenderChamado(ChamadoVO chamadoVO) {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		ChamadoVO retorno = new ChamadoVO();
+		
+		String query = "UPDATE chamados SET idTecnico = " + chamadoVO.getIdTecnico() + ", solucao = '" + chamadoVO.getSolucao()
+					+"', dataFechamento = '" + chamadoVO.getDataFechamento() + "' WHERE idChamado = " + chamadoVO.getIdChamado();
+		
+		try {
+			if(stmt.executeUpdate(query) == 1) {
+				retorno = this.consultarChamadoAtendido(chamadoVO.getIdChamado());
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao executar a query de consulta de atender chamado.");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
+		}
+		return retorno;
+	}
+
+	private ChamadoVO consultarChamadoAtendido(int idChamado) {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		ResultSet resultado = null;
+		
+		ChamadoVO chamadoVO = new ChamadoVO();
+		
+		String query = "SELECT idChamado, idUsuario, idTecnico, titulo, descricao, dataAbertura, solucao, dataFechamento "
+				+ "FROM chamados WHERE idChamado = " + idChamado;
+		
+		try {
+			resultado = stmt.executeQuery(query);
+			while(resultado.next()) {
+				chamadoVO.setIdChamado(Integer.parseInt(resultado.getString(1)));
+				chamadoVO.setIdUsuario(Integer.parseInt(resultado.getString(2)));
+				chamadoVO.setIdTecnico(Integer.parseInt(resultado.getString(3)));
+				chamadoVO.setTitulo(resultado.getString(4));
+				chamadoVO.setDescricao(resultado.getString(5));
+				chamadoVO.setDataAbertura(LocalDate.parse(resultado.getString(6), dataFormatter));
+				chamadoVO.setSolucao(resultado.getString(7));
+				chamadoVO.setDataFechamento(LocalDate.parse(resultado.getString(8), dataFormatter));
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao executar a query de consulta de consultar chamado atendido.");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeResultSet(resultado);
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
+		}
+		return chamadoVO;
+	}
+
+	public ArrayList<ChamadoVO> listarChamadosAbertosDAO() {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		ResultSet resultado = null;
+		
+		ArrayList<ChamadoVO> listaChamadosAbertosVO = new ArrayList<ChamadoVO>();
+		
+		String query = "SELECT idChamado, idUsuario, titulo, descricao, dataAbertura FROM chamados WHERE datafechamento IS NULL";
+		
+		try {
+			resultado = stmt.executeQuery(query);
+			while(resultado.next()) {
+				ChamadoVO chamadoVO = new ChamadoVO();
+				chamadoVO.setIdChamado(Integer.parseInt(resultado.getString(1)));
+				chamadoVO.setIdUsuario(Integer.parseInt(resultado.getString(2)));
+				chamadoVO.setTitulo(resultado.getString(3));
+				chamadoVO.setDescricao(resultado.getString(4));
+				chamadoVO.setDataAbertura(LocalDate.parse(resultado.getString(5), dataFormatter));
+				chamadoVO.setSolucao("");
+				listaChamadosAbertosVO.add(chamadoVO);
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao executar a query de consulta de listagem dos chamados abertos.");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeResultSet(resultado);
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
+		}
+		return listaChamadosAbertosVO;
+	}
+
+	public ArrayList<ChamadoVO> listarChamadosFechadosDAO(UsuarioVO usuarioVO) {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		ResultSet resultado = null;
+		
+		ArrayList<ChamadoVO> listaChamadosFechadosTecnicoVO = new ArrayList<ChamadoVO>();
+		
+		String query = "SELECT idChamado, idUsuario, idTecnico, titulo, descricao, dataAbertura, solucao, dataFechamento "
+				+ "FROM chamados WHERE idTecnico = " + usuarioVO.getIdUsuario() + " AND dataFechamento IS NOT NULL";
+		
+		try {
+			resultado = stmt.executeQuery(query);
+			while(resultado.next()) {
+				ChamadoVO chamadoVO = new ChamadoVO();
+				chamadoVO.setIdChamado(Integer.parseInt(resultado.getString(1)));
+				chamadoVO.setIdUsuario(Integer.parseInt(resultado.getString(2)));
+				chamadoVO.setIdTecnico(Integer.parseInt(resultado.getString(3)));
+				chamadoVO.setTitulo(resultado.getString(4));
+				chamadoVO.setDescricao(resultado.getString(5));
+				chamadoVO.setDataAbertura(LocalDate.parse(resultado.getString(6), dataFormatter));
+				chamadoVO.setSolucao(resultado.getString(7));
+				chamadoVO.setDataFechamento(LocalDate.parse(resultado.getString(8), dataFormatter));
+				listaChamadosFechadosTecnicoVO.add(chamadoVO);
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao executar a query de consulta dos chamados fechados.");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeResultSet(resultado);
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
+		}
+		return listaChamadosFechadosTecnicoVO;
 	}
 	
 	

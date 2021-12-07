@@ -21,13 +21,21 @@ public class Menu {
 			switch(opcao) {
 				case OPCAO_MENU_CHAMADOS:{
 					MenuChamado menuChamado = new MenuChamado();
-					menuChamado.apresentarMenuChamado();
+					menuChamado.apresentarMenuChamado(usuarioVO);
 					break;
 				}
 				case OPCAO_MENU_ATENDIMENTOS:{
+					if(!usuarioVO.getTipoUsuario().equals(TipoUsuarioVO.USUARIO)) {
+						MenuAtendimento menuAtendimento = new MenuAtendimento();
+						menuAtendimento.apresentarMenuAtendimento(usuarioVO);
+					}
 					break;
 				}
 				case OPCAO_MENU_RELATORIO:{
+					if(!usuarioVO.getTipoUsuario().equals(TipoUsuarioVO.USUARIO)) {
+						MenuRelatorio menuRelatorio = new MenuRelatorio();
+						menuRelatorio.apresentarMenuRelatorio();
+					}
 					break;
 				}
 				case OPCAO_MENU_USUARIO:{

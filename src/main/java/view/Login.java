@@ -11,7 +11,6 @@ public class Login {
 	private static final int OPCAO_MENU_LOGIN = 1;
 	private static final int OPCAO_MENU_CADASTRO = 2; 
 	private static final int OPCAO_MENU_SAIR = 9; 
-	public static UsuarioVO usuarioLogado;
 	
 	Scanner scan = new Scanner(System.in);
 
@@ -24,7 +23,6 @@ public class Login {
 					if(usuarioVO.getIdUsuario() != 0 && usuarioVO.getDataExpiracao() == null) {
 						System.out.println("Usuário Logado: " + usuarioVO.getLogin());
 						System.out.println("Perfil: " + usuarioVO.getTipoUsuario());
-						usuarioLogado = usuarioVO;
 						Menu menu = new Menu();
 						menu.apresentarMenu(usuarioVO);
 					}

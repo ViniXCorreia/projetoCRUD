@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import controller.ChamadoController;
 import model.vo.ChamadoVO;
+import model.vo.UsuarioVO;
 
 public class MenuChamado {
 	
@@ -25,13 +26,12 @@ public class MenuChamado {
 	private static final int OPCAO_MENU_CONSULTAR_CHAMADOS_FECHADOS = 3;
 	private static final int OPCAO_MENU_CONSULTAR_CHAMADO_SAIR = 9;
 	
-	public void apresentarMenuChamado() {
+	public void apresentarMenuChamado(UsuarioVO usuarioVO) {
 		int opcao = this.apresentarOpcoesMenu();
 		while(opcao != OPCAO_MENU_CHAMADO_SAIR) {
 			switch(opcao) {
 				case OPCAO_MENU_CADASTRAR_CHAMADO:{
-					ChamadoVO chamadoVO = new ChamadoVO();
-					this.cadastrarChamado(chamadoVO);
+					this.cadastrarChamado(usuarioVO);
 					break;
 				}
 				case OPCAO_MENU_ATUALIZAR_CHAMADO:{
@@ -43,7 +43,7 @@ public class MenuChamado {
 					break;
 				}
 				case OPCAO_MENU_CONSULTAR_CHAMADO:{
-					this.consultarChamado();
+					this.consultarChamado(usuarioVO);
 					break;
 				}
 				default:{
@@ -78,9 +78,11 @@ public class MenuChamado {
 		return Integer.parseInt(teclado.nextLine());
 	}
 	
-	private void cadastrarChamado(ChamadoVO chamadoVO) {
+	private void cadastrarChamado(UsuarioVO usuarioVO) {
 		
+		ChamadoVO chamadoVO = new ChamadoVO();
 		System.out.println("\n---- Cadastrar Novo Chamado ----");
+		chamadoVO.setIdUsuario(usuarioVO.getIdUsuario());
 		System.out.println("\nTitulo do Chamado: ");
 		chamadoVO.setTitulo(teclado.nextLine());
 		System.out.println("Descrição: ");
@@ -119,14 +121,14 @@ public class MenuChamado {
 		return resultado;
 	}
 	
-	private void consultarChamado() {
+	private void consultarChamado(UsuarioVO usuarioVO) {
 		int opcao = this.apresentarOpcoesConsulta();
 		ChamadoController chamadoController = new ChamadoController();
 		while(opcao != OPCAO_MENU_CONSULTAR_CHAMADO_SAIR) {
 			switch(opcao) {
 				case OPCAO_MENU_CONSULTAR_TODOS_CHAMADOS:{
 					opcao = OPCAO_MENU_CONSULTAR_CHAMADO_SAIR;
-					ArrayList<ChamadoVO> listaChamadosVO = chamadoController.consultarTodosChamadosController();
+					ArrayList<ChamadoVO> listaChamadosVO = chamadoController.consultarTodosChamadosController(usuarioVO);
 					System.out.println("\n-------- RESULTADO DA CONSULTA --------");
 					System.out.printf("\n%3s %-3s %-3s %-20s %-20s %-15s %-20s %-15s  ", "IDCHAMADO", "IDUSUARIO",
 							"IDTECNICO", "TITULO", "DESCRICAO", "DATA ABERTURA", "SOLUCAO", "DATAFECHAMENTO");
@@ -138,7 +140,7 @@ public class MenuChamado {
 				}
 				case OPCAO_MENU_CONSULTAR_CHAMADOS_ABERTOS:{
 					opcao = OPCAO_MENU_CONSULTAR_CHAMADO_SAIR;
-					ArrayList<ChamadoVO> listaChamadosAbertosVO = chamadoController.consultarTodosChamadosAbertosController();
+					ArrayList<ChamadoVO> listaChamadosAbertosVO = chamadoController.consultarTodosChamadosAbertosController(usuarioVO);
 					System.out.println("\n-------- RESULTADO DA CONSULTA --------");
 					System.out.printf("\n%3s %-3s %-3s %-20s %-20s %-15s %-20s %-15s  ", "IDCHAMADO", "IDUSUARIO",
 							"IDTECNICO", "TITULO", "DESCRICAO", "DATA ABERTURA", "SOLUCAO", "DATAFECHAMENTO");
@@ -150,7 +152,7 @@ public class MenuChamado {
 				}
 				case OPCAO_MENU_CONSULTAR_CHAMADOS_FECHADOS:{
 					opcao = OPCAO_MENU_CONSULTAR_CHAMADO_SAIR;
-					ArrayList<ChamadoVO> listaChamadosFechadosVO = chamadoController.consultarTodosChamadosFechadosController();
+					ArrayList<ChamadoVO> listaChamadosFechadosVO = chamadoController.consultarTodosChamadosFechadosController(usuarioVO);
 					System.out.println("\n-------- RESULTADO DA CONSULTA --------");
 					System.out.printf("\n%3s %-3s %-3s %-20s %-20s %-15s %-20s %-15s  ", "IDCHAMADO", "IDUSUARIO",
 							"IDTECNICO", "TITULO", "DESCRICAO", "DATA ABERTURA", "SOLUCAO", "DATAFECHAMENTO");

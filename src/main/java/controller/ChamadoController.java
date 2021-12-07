@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import model.bo.ChamadoBO;
 import model.vo.ChamadoVO;
+import model.vo.UsuarioVO;
 
 public class ChamadoController {
 
@@ -22,19 +23,34 @@ public class ChamadoController {
 		return chamadoBO.atualizarChamadoBO(chamadoVO);
 	}
 
-	public ArrayList<ChamadoVO> consultarTodosChamadosController() {
+	public ArrayList<ChamadoVO> consultarTodosChamadosController(UsuarioVO usuarioVO) {
 		ChamadoBO chamadoBO= new ChamadoBO();
-		return chamadoBO.consultarTodosChamadosBO();
+		return chamadoBO.consultarTodosChamadosBO(usuarioVO);
 	}
 
-	public ArrayList<ChamadoVO> consultarTodosChamadosAbertosController() {
+	public ArrayList<ChamadoVO> consultarTodosChamadosAbertosController(UsuarioVO usuarioVO) {
 		ChamadoBO chamadoBO= new ChamadoBO();
-		return chamadoBO.consultarTodosChamadosAbertosBO();
+		return chamadoBO.consultarTodosChamadosAbertosBO(usuarioVO);
 	}
 
-	public ArrayList<ChamadoVO> consultarTodosChamadosFechadosController() {
+	public ArrayList<ChamadoVO> consultarTodosChamadosFechadosController(UsuarioVO usuarioVO) {
 		ChamadoBO chamadoBO= new ChamadoBO();
-		return chamadoBO.consultarTodosChamadosFechadosBO();
+		return chamadoBO.consultarTodosChamadosFechadosBO(usuarioVO);
+	}
+
+	public ChamadoVO atenderChamadoController(ChamadoVO chamadoVO) {
+		ChamadoBO chamadoBO= new ChamadoBO();
+		return chamadoBO.atenderChamado(chamadoVO);
+	}
+
+	public ArrayList<ChamadoVO> listarChamadosAbertosController() {
+		ChamadoBO chamadoBO= new ChamadoBO();
+		return chamadoBO.listarChamadosAbertosBO();
+	}
+
+	public ArrayList<ChamadoVO> listarChamadosFechadosTecnicoController(UsuarioVO usuarioVO) {
+		ChamadoBO chamadoBO= new ChamadoBO();
+		return chamadoBO.listarChamadosFechadosTecnicoBO(usuarioVO);
 	}
 	
 }
