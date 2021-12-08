@@ -18,7 +18,7 @@ public class ChamadoBO {
 		boolean resultado = false;
 		ChamadoDAO chamadoDAO = new ChamadoDAO();
 		if(chamadoDAO.verificarExistenciaPorIdChamadoDAO(chamadoVO.getIdChamado())) {
-			if(chamadoDAO.verificarDataFechamentoPorIdChamadoDAO(chamadoVO.getIdChamado())) {
+			if(!chamadoDAO.verificarDataFechamentoPorIdChamadoDAO(chamadoVO.getIdChamado())) {
 				if(chamadoDAO.verificarProprietarioChamadoPorIdChamadoDAO(chamadoVO)) {
 					resultado = chamadoDAO.excluirChamadoDAO(chamadoVO.getIdChamado());
 				} else {
@@ -37,7 +37,7 @@ public class ChamadoBO {
 		boolean resultado = false;
 		ChamadoDAO chamadoDAO = new ChamadoDAO();
 		if(chamadoDAO.verificarExistenciaPorIdChamadoDAO(chamadoVO.getIdChamado())) {
-			if(chamadoDAO.verificarDataFechamentoPorIdChamadoDAO(chamadoVO.getIdChamado())) {
+			if(!chamadoDAO.verificarDataFechamentoPorIdChamadoDAO(chamadoVO.getIdChamado())) {
 				if(chamadoDAO.verificarProprietarioChamadoPorIdChamadoDAO(chamadoVO)) {
 					resultado = chamadoDAO.atualizarChamadoDAO(chamadoVO);
 				} else {
@@ -83,10 +83,10 @@ public class ChamadoBO {
 		ChamadoVO retorno = new ChamadoVO();
 		ChamadoDAO chamadoDAO = new ChamadoDAO();
 		if(chamadoDAO.verificarExistenciaPorIdChamadoDAO(chamadoVO.getIdChamado())) {
-			if(chamadoDAO.verificarDataFechamentoPorIdChamadoDAO(chamadoVO.getIdChamado())) {
-				System.out.println("\nChamado já se encontra fechado na base de dados");
-			} else {
+			if(!chamadoDAO.verificarDataFechamentoPorIdChamadoDAO(chamadoVO.getIdChamado())) {
 				retorno = chamadoDAO.atenderChamado(chamadoVO); 
+			} else {
+				System.out.println("\nChamado já se encontra fechado na base de dados");
 			}
 		} else {
 			System.out.println("\nChamado não existe na base de dados");

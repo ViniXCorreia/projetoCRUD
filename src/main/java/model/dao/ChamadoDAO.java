@@ -86,7 +86,7 @@ public class ChamadoDAO {
 			resultado = stmt.executeQuery(query);
 			if(resultado.next()) {
 				String dataFechamento = resultado.getString(1);
-				if(dataFechamento == null) {
+				if(dataFechamento != null) {
 					retorno = true;
 				}
 			}
