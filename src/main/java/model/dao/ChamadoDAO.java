@@ -80,14 +80,13 @@ public class ChamadoDAO {
 		ResultSet resultado = null;
 		boolean retorno = false;
 		
-		String query = "SELECT datafechamento FROM chamados WHERE idchamado = " + idChamado +
-				" AND datafechamento IS NULL";
+		String query = "SELECT datafechamento FROM chamados WHERE idchamado = " + idChamado;
 		
 		try {
 			resultado = stmt.executeQuery(query);
 			if(resultado.next()) {
 				String dataFechamento = resultado.getString(1);
-				if(dataFechamento != null) {
+				if(dataFechamento == null) {
 					retorno = true;
 				}
 			}
@@ -110,7 +109,7 @@ public class ChamadoDAO {
 		boolean retorno = false;
 		
 		String query = "SELECT idusuario FROM chamados WHERE idchamado = " + chamadoVO.getIdChamado() 
-						+" AND idusuario = " + chamadoVO.getIdUsuario();
+						+ " AND idusuario = " + chamadoVO.getIdUsuario();
 		
 		try {
 			resultado = stmt.executeQuery(query);

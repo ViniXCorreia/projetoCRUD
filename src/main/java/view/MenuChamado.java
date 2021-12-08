@@ -35,11 +35,11 @@ public class MenuChamado {
 					break;
 				}
 				case OPCAO_MENU_ATUALIZAR_CHAMADO:{
-					this.atualizarChamado();
+					this.atualizarChamado(usuarioVO);
 					break;
 				}
 				case OPCAO_MENU_EXCLUIR_CHAMADO:{
-					this.excluirChamado();
+					this.excluirChamado(usuarioVO);
 					break;
 				}
 				case OPCAO_MENU_CONSULTAR_CHAMADO:{
@@ -168,12 +168,12 @@ public class MenuChamado {
 				}
 			}
 		}
-		
 	}
 
 
-	private void excluirChamado() {
+	private void excluirChamado(UsuarioVO usuarioVO) {
 		ChamadoVO chamadoVO = new ChamadoVO();
+		chamadoVO.setIdUsuario(usuarioVO.getIdUsuario());
 		System.out.println("\n---- Excluir Chamado ----");
 		System.out.print("\nDigite o ID do Chamado a ser excluído: ");
 		chamadoVO.setIdChamado(Integer.parseInt(teclado.nextLine()));
@@ -190,8 +190,9 @@ public class MenuChamado {
 	}
 
 
-	private void atualizarChamado() {
+	private void atualizarChamado(UsuarioVO usuarioVO) {
 		ChamadoVO chamadoVO = new ChamadoVO();
+		chamadoVO.setIdUsuario(usuarioVO.getIdUsuario());
 		System.out.println("\n---- Atualizar Chamado ----");
 		System.out.print("\nInforme o ID do chamado: ");
 		chamadoVO.setIdChamado(Integer.parseInt(teclado.nextLine()));
