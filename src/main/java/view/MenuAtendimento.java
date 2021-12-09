@@ -124,7 +124,7 @@ public class MenuAtendimento {
 		System.out.println("\nOpções: ");
 		System.out.println(OPCAO_MENU_LISTAR_CHAMADO + " - Listar Chamados");
 		System.out.println(OPCAO_MENU_ATENDER_CHAMADO + " - Atender Chamado");
-		System.out.println(OPCAO_MENU_LISTAR_CHAMADO + " - Voltar");
+		System.out.println(OPCAO_MENU_LISTAR_CHAMADOS_SAIR + " - Voltar");
 		System.out.print("Digite uma opção: ");
 		return Integer.parseInt(teclado.nextLine());
 	}

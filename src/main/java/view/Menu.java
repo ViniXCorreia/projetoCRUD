@@ -34,7 +34,7 @@ public class Menu {
 				case OPCAO_MENU_RELATORIO:{
 					if(!usuarioVO.getTipoUsuario().equals(TipoUsuarioVO.USUARIO)) {
 						MenuRelatorio menuRelatorio = new MenuRelatorio();
-						menuRelatorio.apresentarMenuRelatorio();
+						menuRelatorio.apresentarMenuRelatorio(usuarioVO);
 					}
 					break;
 				}
