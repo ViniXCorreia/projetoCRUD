@@ -49,7 +49,7 @@ public class MenuRelatorio {
 		RelatorioController relatorioController = new RelatorioController();
 		ArrayList<RelatorioDTO> relatorioTecnicosDTO = relatorioController.rendimentoTodosTecnicosController();
 		System.out.println("\n--------- RESULTADO DA CONSULTA ---------");
-		System.out.printf("\n%10s  %10s  %10s  ", "NOME", "CHAMADOS ATENDIDOS", "MEDIA TEMPO RESOLUÇÃO");
+		System.out.printf("\n%10s  %10s  %10s  ", "NOME", "CHAMADOS ATENDIDOS", "MEDIA RESOLUÇÃO (DIAS)");
 		for(int i = 0; i < relatorioTecnicosDTO.size(); i++) {
 			relatorioTecnicosDTO.get(i).imprimir();
 		}
@@ -65,7 +65,7 @@ public class MenuRelatorio {
 		LocalDate dataFechamento = LocalDate.parse(teclado.nextLine(), dataFormatter);
 		RelatorioDTO relatorioTecnicoDTO = relatorioController.rendimentoIndividulTecnicoController(usuarioVO, dataAbertura, dataFechamento);
 		System.out.println("\n--------- RESULTADO DA CONSULTA ---------");
-		System.out.printf("\n%10s  %10s  %10s  ", "NOME", "CHAMADOS ATENDIDOS", "MEDIA TEMPO RESOLUÇÃO");
+		System.out.printf("\n%10s  %10s  %10s  ", "NOME", "CHAMADOS ATENDIDOS", "MEDIA RESOLUÇÃO (DIAS)");
 		relatorioTecnicoDTO.imprimir();
 		System.out.println();
 		
